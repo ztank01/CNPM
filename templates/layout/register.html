@@ -1,0 +1,71 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đăng ký tài khoản mới{% endblock %}
+
+{% block content %}
+
+{% if err_msg %}
+
+<div class="alert alert-danger">
+{{err_msg}}
+</div>
+
+{% endif %}
+
+    <h1 class="text-center text-danger">Đăng ký tài khoản khách</h1>
+<form method="post">
+
+<li><h3>Nhập thông tin tài khoản</h3></li>
+<div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" name="username" class="form-control" placeholder="Nhập Username...." id="username" required>
+</div>
+<div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" name="password" class="form-control" placeholder="Nhập Password...." id="password" required>
+</div>
+<div class="form-group">
+    <label for="confirm-password">Confirm Password:</label>
+    <input type="password" name="confirm-password" class="form-control" placeholder="Nhập confirm Password...." id="confirm-password" required>
+</div>
+
+<li><h3>Nhập thông tin khách hàng</h3></li>
+<div class="form-group">
+<label for="LoaiKhach">Loại khách</label>
+<select name="LoaiKhach" class="form-control">
+    {% for p in loaiKhach %}
+    <option value="{{p.MaLoaiKhach}}">{{p.LoaiKhach}}</option>
+    {% endfor %}
+</select>
+</div>
+<div class="form-group">
+    <label for="confirm-password">CMND:</label>
+    <input type="text" name="CMND" class="form-control" placeholder="Nhập CMND...." id="CMND" required>
+</div>
+<div class="form-group">
+    <label for="confirm-password">Địa chỉ:</label>
+    <input type="text" name="DiaChi" class="form-control" placeholder="Nhập Dia Chi...." id="DiaChi" required>
+</div>
+<div class="form-group">
+    <label for="confirm-password">Ngày sinh:</label>
+    <input type="date" name="NgaySinh" class="form-control" placeholder="Nhập Ngay Sinh...." id="NgaySinh">
+</div>
+<div class="form-group">
+    <label for="confirm-password">SĐT:</label>
+    <input type="text" name="SDT" class="form-control" placeholder="Nhập SDT...." id="SDT" required>
+</div>
+
+<div class="form-group">
+    <label for="confirm-password">Loại SDT:</label>
+    <select name="LoaiSDT" class="form-control">
+        <option value="Cá nhân">Cá nhân</option>
+        <option value="Công ty">Công ty</option>
+        <option value="Vợ">Vợ</option>
+        <option value="Chồng">Chồng</option>
+    </select>
+</div>
+
+<button type="submit" class="btn btn-primary">Đăng ký</button>
+</form>
+
+{% endblock %}

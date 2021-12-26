@@ -1,0 +1,36 @@
+{% extends 'layout/base.html' %}
+
+{% block title  %} Trả Phòng Trực Tuyến{% endblock %}
+{% block content %}
+<h1 class="text-center text-danger">Danh mục các phòng chưa thanh toán</h1>
+{% if rooms == [] %}
+<div class="alert alert-info">
+    Không có phòng nào!!!
+</div>
+{% else %}
+<table class="table">
+    <tr>
+        <th>Phòng</th>
+        <th>Ngày bắt đầu</th>
+        <th>Đơn giá</th>
+        <th>Số ngày ở</th>
+        <th>Chi phí</th>
+    </tr>
+    {% for row in rooms %}
+        <tr>
+            <td>{{ row[0].MaPhong }}</td>
+            <td>{{ row[0].NgayBatDau }}</td>
+            <td>{{ row[2].DonGia }} nghìn đồng</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }} đ</td>
+        </tr>
+    {% endfor %}
+        <td>
+            <h3>Thành tiền: {{ priceAllRooms }} đ</h3>
+            <form action="/api/thanhtoan_online" method="post">
+             <button type="submit"   class="btn btn-success">Thanh Toán</button>
+            </form>
+        </td>
+</table>
+{% endif %}
+{% endblock %}

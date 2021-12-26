@@ -1,0 +1,70 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Đặt phòng{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center text-info">Thông tin các phòng đang được lưu</h1>
+
+<table class="table">
+    <tr>
+        <th>Mã phòng</th>
+        <th>Loại phòng</th>
+        <th>Đơn giá</th>
+        <th>Ngày bắt đầu</th>
+        <th>Số ngày ở dự kiến</th>
+        <th></th>
+    </tr>
+    {% if not session.get('cart') %}
+        <tr>
+            <td colspan="3">Không có phòng nào trong giỏ!!!</td>
+        </tr>
+    {% else%}
+    {% for item in session['cart'].values() %}
+    <tr id="Phong{{item.MaPhong}}">
+        <td>{{item.MaPhong}}</td>
+        <td>{{item.LoaiPhong}}</td>
+        <td>{{item.DonGia}} nghìn đồng</td>
+        <td>
+            <input type="date"
+                   value="{{item.NgayBatDau}}"
+                   onchange="updateCartItem({{item.MaPhong}}, this.value, {{item.quantity}})"/>
+        </td>
+        <td>
+            <input type="number"
+                   value="{{item.quantity}}"
+                   onchange="updateCartItem({{item.MaPhong}}, '{{item.NgayBatDau}}', this.value)"
+                   class="form-control" min="1"/>
+        </td>
+        <td>
+            <input type="button" value="Sửa" class="btn btn-info"/>
+        </td>
+        <td>
+            <input type="button"
+                   value="Xóa"
+                   onclick="deleteCartItem({{ item.MaPhong }})"
+                   class="btn btn-danger"/>
+        </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+
+{% if session.get('cart') %}
+<div class="alert alert-info">
+    <li><h3>Tổng số phòng là: <span id="cart-quantity">{{cart_stats.total_quantity}} phòng</span></h3></li>
+    <li><h3>Tổng số tiền là: <span id="cart-amount">{{cart_stats.total_amount}} nghìn đồng</span></h3></li>
+</div>
+<div>
+    {% if current_user.is_authenticated or session.get('khach') %}
+    <input type="button"
+           onclick="pay()"
+           value="Thanh toán"
+           class="btn btn-success"/>
+    {% else %}
+    <a href="/dangnhap">Đăng nhập để thanh toán</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

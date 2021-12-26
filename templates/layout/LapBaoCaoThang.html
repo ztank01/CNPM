@@ -1,0 +1,95 @@
+{% extends 'layout/layoutNhanVien/basenv.html' %}
+
+{% block title %}Lập báo cáo tháng{% endblock %}
+
+{% block content %}
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<head >
+<h1 class="text-center text-info">Báo Cáo Doanh Thu Theo Từng Loại Phòng</h1>
+</head>
+<body>
+<div class="row">
+<form action="/baocao" >
+  <div class="row">
+    <div class="col-md-6 form-group">
+      <label class="input-title"  >Từ Ngày:</label>
+      <input type="date" name="from_date" placeholer="Thoi gian bat dau..." class="form-control"/>
+    </div>
+    <div class="col-md-6 form-group">
+      <label class="input-title"  >Đến Ngày:</label>
+      <input type="date" name="to_date" placeholer="Thoi gian ket thuc..." class="form-control"/>
+    </div>
+  </div>
+  <input type="submit" value="Thống kê" class="btn btn-warning" />
+</form>
+<table style="width:100%">
+  <tr>
+    <th class="text-center text-danger">STT</th>
+    <th class="text-center text-danger">Loại Phòng</th>
+    <th class="text-center text-danger">Doanh Thu</th>
+      <th class="text-center text-danger">Tỉ lệ</th>
+  </tr>
+    {%for i in bcao %}
+  <tr>
+    <td class="text-center">{{stt}}</td>
+    <td class="text-center">{{i[0]}}</td>
+    <td class="text-center">{{i[1]}}</td>
+    {%for x in tongdoanhthu%}
+    <td class="text-center">{{i[1]/x[1]}}</td>
+    {%endfor%}
+  </tr>
+    {%endfor%}
+</table>
+  <h2>Biểu đồ:</h2>
+  <div class="col-md-7 col-xs-12">
+    <canvas id="BaoCaoThang"></canvas>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let labels=[], info = [];
+
+{% for c in bcao %}
+    labels.push('{{ c[0]}}')
+    {%for x in tongdoanhthu%}
+    info.push({{c[1]/x[1]}})
+    {%endfor%}
+
+{%endfor%}
+
+let colors=[]
+for (let i=0; i< labels.length; i++){
+    let r=parseInt(Math.random()* 255)
+    let g=parseInt(Math.random()* 255)
+    let b=parseInt(Math.random()* 255)
+    colors.push(`rgb(${r}, ${g}, ${b})`)
+    }
+
+
+  const data = {
+  labels:labels,
+  datasets: [{
+    label: 'Báo Cáo Tháng',
+    data: info,
+    backgroundColor: colors,
+    hoverOffset: 4
+  }]
+};
+
+const config = {
+  type: 'doughnut',
+  data: data,
+};
+
+window.onload=function(){
+  let ctx= document.getElementById('BaoCaoThang').getContext('2d')
+  new Chart(ctx, config);
+}
+
+</script>
+</body>
+{% endblock %}

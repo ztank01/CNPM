@@ -1,0 +1,103 @@
+
+{% extends 'layout/layoutNhanVien/basenv.html' %}
+{% block title %}Báo cáo mật độ{% endblock %}
+
+{% block content %}
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<head >
+<h1 class="text-center text-info">Báo Cáo Mật Độ Sử Dụng Phòng</h1>
+</head>
+<body>
+<div class="row">
+<form action="/matdo" >
+  <div class="row">
+    <div class="col-md-6 form-group">
+      <label class="input-title"  >Từ Ngày:</label>
+      <input type="date" name="from_date" placeholer="Thoi gian bat dau..." class="form-control"/>
+    </div>
+    <div class="col-md-6 form-group">
+       <label class="input-title"  >Đến Ngày:</label>
+      <input type="date" name="to_date" placeholer="Thoi gian ket thuc..." class="form-control"/>
+    </div>
+  </div>
+  <input type="submit" value="Thống kê" class="btn btn-warning" />
+</form>
+<table style="width:100%">
+  <tr>
+    <th class="text-center text-danger">STT</th>
+    <th class="text-center text-danger"> Phòng</th>
+    <th class="text-center text-danger">Số Ngày Thuê</th>
+      <th class="text-center text-danger">Tỉ lệ</th>
+  </tr>
+    {%for i in matdo %}
+  <tr>
+    <td class="text-center">{{stt}}</td>
+    <td class="text-center">{{i[0]}}</td>
+    <td class="text-center">{{i[1]}}</td>
+    <td class="text-center">{{i[1]/tile}}</td>
+  </tr>
+    {%endfor%}
+</table>
+  <h2>Biểu đồ:</h2>
+  <div class="col-md-7 col-xs-12">
+    <canvas id="BaoCaoThang"></canvas>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let labels=[], info = [];
+
+{% for c in matdo %}
+    labels.push('{{ c[0]}}')
+    info.push({{c[1]/tile}})
+{%endfor%}
+
+let colors=[]
+for (let i=0; i< labels.length; i++){
+    let r=parseInt(Math.random()* 255)
+    let g=parseInt(Math.random()* 255)
+    let b=parseInt(Math.random()* 255)
+    colors.push(`rgb(${r}, ${g}, ${b})`)
+    }
+
+
+  const data = {
+  labels: labels,
+  datasets: [{
+    type: 'bar',
+    label: 'Phòng',
+    data: info,
+    borderColor: colors,
+    backgroundColor: 'rgba(255, 99, 132, 0.2)'
+  }, {
+    type: 'line',
+    label: 'Tỉ lệ thuê phòng',
+    data: info,
+    fill: false,
+    borderColor: 'rgb(54, 162, 235)'
+  }]
+};
+const config = {
+  type: 'scatter',
+  data: data,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+};
+
+window.onload=function(){
+  let ctx= document.getElementById('BaoCaoThang').getContext('2d')
+  new Chart(ctx, config);
+}
+
+</script>
+</body>
+{% endblock %}

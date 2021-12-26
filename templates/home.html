@@ -1,0 +1,49 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block content %}
+<h1 class="text-center text-danger">DANH MỤC PHÒNG</h1>
+
+    {% if not Phong %}
+    <div class="alert alert-info">
+        Không có phòng
+    </div>
+    {% endif %}
+
+    <ul class="pagination">
+        {% for i in range(1, page_num+1) %}
+        {% if MaLoaiPhong and not kw %}
+        <li class="page-item"><a class="page-link" href="/?MaLoaiPhong={{MaLoaiPhong}}&&page={{i}}">{{i}}</a></li>
+        {% elif not MaLoaiPhong and not kw %}
+        <li class="page-item"><a class="page-link" href="/?page={{i}}">{{i}}</a></li>
+        {% elif not MaLoaiPhong and kw %}
+         <li class="page-item"><a class="page-link" href="/?kw={{kw}}&&page={{i}}">{{i}}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+<div class="row">
+    {% for p in Phong %}
+    <div class="col-md-3 col-xs-12" style="padding-bottom: 15px">
+        <div class="card">
+            <img class="card-img-top img-fluid" src={{url_for('static', filename="images/phòng đơn2.jpg")}} alt="Card image">
+            <div class="card-body">
+                <h4 class="card-title">Mã phòng: {{p.MaPhong}}</h4>
+                <p class="card-text">Tình Trạng: {{p.TinhTrang}}</p>
+                <p class="card-text text">Giá: {{p.LoaiPhong.DonGia}}</p>
+                {% if p.TinhTrang == 'IU': %}
+                <p class="card-text text">Ngày bắt đầu thuê: {{p.chiTietThue[0].NgayBatDau.date()}}</p>
+                <p class="card-text text">Số ngày ở dự kiến: {{p.chiTietThue[0].SoNgayODuKien}}</p>
+                {% else %}
+                <p class="card-text text">Ngày bắt đầu thuê: Chưa được đặt </p>
+                <p class="card-text text">Số ngày ở dự kiến: Chưa được đặt</p>
+                <a href="javascript:;" class="btn btn-danger" onclick="addToCart({{p.MaPhong}}, {{p.MaLoaiPhong}})">Đặt Phòng</a>
+                {% endif %}
+                <a href="#" class="btn btn-info">Xem Chi Tiết</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

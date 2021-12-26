@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="/">QLKS-Nhân Viên</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Navbar links -->
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item" >
+        <a class="nav-link "  href="/thuephong">Lập Phiếu Thuê Phòng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  href="/hoadon">Lập Hóa Đơn Thanh Toán</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link"  href="/baocao">Lập Báo Cáo Tháng</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  href="/matdo">Báo Cáo Mật Độ</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger" href="#">{{session.get('khach')['khach'].username}}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  href="dangxuat">Đăng xuất</a>
+      </li>
+
+    </ul>
+  </div>
+</nav>

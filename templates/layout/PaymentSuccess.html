@@ -1,0 +1,14 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Thanh toán online{% endblock %}
+
+{% block content %}
+{% if msg == 'true' %}
+<div class="alert alert-success" role="alert">
+  Thanh toán thành công!!!
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+  Thanh toán thất bại!!!
+</div>
+{% endblock %}
